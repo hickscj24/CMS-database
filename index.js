@@ -1,49 +1,61 @@
+
 var inquirer = require('inquirer');
 var fs = require('fs');
 var path = require('path');
+var connection = require('./db/connection');
 
-async function employee_tracker() {
-   
-    async function createDepartment() {
+ function employee_tracker() {
 
-        await inquirer.prompt([
-            /* Pass your questions in here */
+    console.log('EMPLOYEE MANAGER');
+
+    loadPromt();
+
+    function loadPromt() {
+        inquirer.prompt([
             {
-                type: 'input',
-                name: 'department',
-                message: 'do you want to view all departments?'
-            },
-            {
-                type: 'input',
-                name: 'roles',
-                message: 'do you want to view all roles?'
-            },
-            {
-                type: 'input',
-                name: 'employees',
-                message: 'do you want to view all employees?'
-            },
-           
-
-        ]).then(async (answers) => {
-            console.log(answers)
-
-            var department = new department(answers.department, answers.roles, answers.employees)
-           
-           
-            await department(department);
-
-            async function addDepartment(department) {
-                await inquirer.prompt([
+                type:'list',
+                name: 'userChoice',
+                choices: [
                     {
-                        type: 'list',
-                        name: 'department',
-                        message: 'which department to you want to add?',
-                        choices: [
-                            'Sales',
-                            'Engineering',
-                            'Finance',
-                            'Legal',
-                            'I do not want to add another department'
-                        ]
-                    }
+                        name: 'View All Employees', 
+                        value:'view_employees'
+                    },
+                    {
+                        name: 'View All Employees By Dept',
+                        value: 'view_employees_dept'
+                   }
+                ]
+            }
+        ]) .then(res =>{
+            let choice = res.userChoice
+            console.log(choice)
+            switch(choice){
+                case 'view_employees':
+                    viewAllEmployees();
+                    break;
+                case 'view_employees_dept':
+                    viewAllEmployeesByDept();
+                    break;
+            }
+        })
+    }
+   
+
+ }
+
+
+
+
+
+        function viewAllEmployees(){ 
+            console.log('view employees')
+        }
+
+
+        function viewAllEmployeesByDept(){
+
+            console.log('view employees by dept')
+        }
+        
+ 
+ employee_tracker();
